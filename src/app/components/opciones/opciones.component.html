@@ -1,0 +1,32 @@
+
+    <nav class="navbar navbar-expand-sm bg-light justify-content-center">
+  
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" type="submit" (click)="AgregarNuevo()">NUEVO <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">ABRJR</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">REPORTE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">ANALIZAR</a>
+            </li>
+          </ul>
+
+          <form class="form-inline my-2 my-lg-0">
+            <button type="submit" class="btn btn-primary" (click)="ObtenerArchivos()">ANALIZADOR</button>
+          </form>
+
+          <form class="form-inline my-2 my-lg-0">
+               <input id="fileInput" (change) ="fileChanged($event)"  type="file" size="50" class = "nav-link btn  ">
+               
+          </form>
+
+        </div>
+      </nav>
+
+

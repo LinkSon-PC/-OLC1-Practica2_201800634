@@ -1,0 +1,56 @@
+
+<div class="container-fluid" id="python">
+
+    <textarea class="form-control" rows="5" id="salida" disabled="true"></textarea>
+</div>
+
+<div class="container-fluid" id="salida">
+
+    <select class="form-control" id="selida">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+  
+    <textarea class="form-control" rows="5" disabled="true">sdffd</textarea>
+</div>
+
+
+<div class="container-fluid" id="tabla">
+
+  <label>ERROR LEXICO <input type="checkbox" (click)="verLexico()" [(ngModel)]="_Tlexico" /></label><br/>
+  <label>ERROR SINTÁCTICO <input type="checkbox" (click)="verSintactico()"  [(ngModel)]="_TSintactico" /></label><br/>
+
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">NO</th>
+            <th scope="col">FILA</th>
+            <th scope="col">COLUMNA</th>
+            <th scope="col">DESCRIPCION</th>
+            <th scope="col">TIPO</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+
+            <tr class="table-active"  *ngFor="let lexico of ErrLexico; let i=index">
+              <td>{{i}}</td>
+              <td>{{lexico.Fila}}</td>
+              <td>{{lexico.Columna}}</td>
+              <td>{{lexico.Descripcion}}</td>
+              <td>{{lexico.Error}}</td>
+            </tr>
+
+            <tr class="table-active"  *ngFor="let sintactico of ErrSintactico; let i=index">
+              <td>{{sintactico.No}}</td>
+              <td>{{sintactico.Fila}}</td>
+              <td>{{sintactico.Columna}}</td>
+              <td>{{sintactico.Descripcion}}</td>
+              <td>{{sintactico.TipoE}}</td>
+            </tr>
+            
+        </tbody>
+      </table> 
+</div>

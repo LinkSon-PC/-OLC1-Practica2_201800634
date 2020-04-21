@@ -1,0 +1,29 @@
+
+#salida{
+    left:250px;
+    top: 50px;
+    position:relative;
+    height: 400px;
+    width: 475px;
+ }
+
+ #python{
+    left:290px;
+    top: 25px;
+    position:relative;
+    height: 400px;
+    width: 550px;
+ }
+
+
+ #tabla{
+    top: 550px;
+    position: absolute;
+    height: 400px;
+    width: 475px;
+ }
+
+ textarea{
+    width: 450px;
+    height: 400px;
+ }

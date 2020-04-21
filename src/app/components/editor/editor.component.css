@@ -1,0 +1,13 @@
+
+#traductor{
+    
+    top: 75px;
+    position:absolute;
+    height: 700px;
+    width: 550px;
+ }
+
+ textarea{
+     height: 400px;
+     width: 525px;
+ }

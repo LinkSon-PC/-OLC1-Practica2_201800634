@@ -1,0 +1,12 @@
+
+
+<div class="container-fluid" id="traductor">
+  <select class="form-control" id="sel1" [(ngModel)]="indice" (click)="VerContenido()" > 
+    <option *ngFor="let selec of selector; let i=index" value="{{i}}"> {{i}}, {{selec.Nombre}}</option>
+  </select>
+
+  <textarea id = "editor"  class="d-block justify-content-center"  [(ngModel)]="newArchivo.Contenido">
+    {{newArchivo.Contenido}}
+  </textarea>
+
+</div>
