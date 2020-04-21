@@ -4,6 +4,8 @@ import { LexicoService } from '../../services/ListaLexico/lexico.service';
 import { ListaModule, LexicoModule } from '../../models/lexico/lexico.module';
 import { SintacticoModule,ListaSintactico } from "../../models/sintactico/sintactico.module";
 
+import { HtmlModule } from "../../models/hjson/html.module";
+
 @Component({
   selector: 'app-salidas',
   templateUrl: './salidas.component.html',
@@ -14,6 +16,9 @@ export class SalidasComponent implements OnInit {
 
   _Tlexico:boolean = false;
   _TSintactico:boolean = false ;
+  _Hjson:boolean = false;
+
+  Reporte:HtmlModule;
 
   ErrLexico:LexicoModule[] =[];
   ErrSintactico:ListaSintactico[] =[];
@@ -41,6 +46,16 @@ export class SalidasComponent implements OnInit {
       this.ErrSintactico =  this.Sintactico.ErrorSintactico;
     }else{
       this.ErrSintactico = [];
+    }
+  }
+
+  verReporte(){
+    var Contenido=document.getElementById("reporte");
+
+    if(this._Hjson){
+      Contenido.innerText = this.Sintactico.Sintactico.RepHJ.HTML;
+    }else{
+      Contenido.innerText = this.Sintactico.Sintactico.RepHJ.JSON;
     }
   }
 

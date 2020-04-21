@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { ListaModule, Token, LexicoModule } from "../lexico/lexico.module";
+import { HtmlModule,ObjetoHtml } from '../../models/hjson/html.module';
 
 @NgModule({
   declarations: [],
@@ -43,6 +44,12 @@ export class SintacticoModule {
   TokenActual: LexicoModule;
   Actual: number;
 
+  PR_break:boolean;
+  HTML:string;
+
+  HtmlJson:HtmlModule;
+  public RepHJ:ObjetoHtml;
+
   constructor() {
     this.OpReturn = false;
     this.OpFuncion = false;
@@ -57,6 +64,8 @@ export class SintacticoModule {
 
     this.Tabulador = 0;
     this.Actual = 0;
+
+    this.HTML = "";
   }
 
   public GetTraduccion(): string {
@@ -82,6 +91,10 @@ export class SintacticoModule {
     this.Tabulador = 0;
     this.Actual = 0;
 
+    
+    this.HTML = "";
+    this.PR_break = false;
+
     this.Lexico = _lexico;
 
     console.log("ANÁLISIS SINTÁCTICO");
@@ -92,7 +105,12 @@ export class SintacticoModule {
 
     this.Inicio();
 
-    console.log(this.Traduccion);
+    this.traduce();
+
+    console.log(this.HTML);
+
+    this.HtmlJson = new HtmlModule(this.HTML);
+    this.RepHJ = this.HtmlJson.getReporte();
   }
 
   Inicio(): void {
@@ -234,10 +252,11 @@ export class SintacticoModule {
       // Instruccion -> asignacionSimple
       this.Instruccion();
       this.InstruccionP();
-    } else if (this.TokenActual.Tipo == Token.P_break) {
+    } else if (this.TokenActual.Tipo == Token.P_break && this.PR_break == true) {
       // Instruccion -> asignacionSimple
       this.Instruccion();
-      
+      this.PR_break = false;
+
     } else if ( (this.TokenActual.Tipo == Token.punto_y_coma) && this.Traducir == false) {
     this.Traducir = true;
     
@@ -280,13 +299,17 @@ export class SintacticoModule {
         this.getTipo_Error(this.TokenActual.Tipo) ===
         this.getTipo_Error(Token.P_Main)
       ) {
+        this.Traduccion += "if __name__ = \"__main__\"\: main()";
+        this.Traduccion += "def" ;
         this.parea(Token.P_Main);
+        
       } else {
         this.parea(Token.id);
       }
 
       this.parea(Token.parentesis_izq);
       this.OpcionMain_Metodo();
+      
     } else {
       this.Tipo();
       this.parea(Token.id);
@@ -504,6 +527,7 @@ export class SintacticoModule {
       //F->  FALSE
       this.parea(Token.P_false);
     } else if (this.TokenActual.Tipo == Token.caracter) {
+      this.HTML +=  this.TokenActual.Lexema.substring(1,this.TokenActual.Lexema.length-1);
       this.parea(Token.caracter);
     } else {
       //F->  NUMERO
@@ -681,10 +705,12 @@ export class SintacticoModule {
   public SentenciaSwitch_case(): void {
     this.parea(Token.P_switch);
     this.parea(Token.parentesis_izq);
-    
+
     this.Expresion();
     
     this.parea(Token.parentesis_derecho);
+    
+    this.Traduccion += "switcher =";
     this.parea(Token.llave_izq);
     this.salto();
 
@@ -727,6 +753,8 @@ export class SintacticoModule {
     this.opcionCase();
     this.parea(Token.dosPuntos);
     this.salto();
+
+    this.PR_break = true;
 
     this.Tabulador++;
     this.List_Intrucciones();
@@ -1068,4 +1096,26 @@ export class SintacticoModule {
         return "NO REGISTRADO"; // ME AVISA SI HAY UNO QUE ME FALTO REGISTRAR EN MI CLASE ENUM
     }
   }
+
+  
+  public traduce() {
+    
+    let comentarioBloque:string = "\'\'\'";
+    // this.Traduccion = this.Traduccion.replace(/\/\//g, "#");
+    // this.Traduccion = this.Traduccion.replace(/\/*/g, comentarioBloque);
+    // this.Traduccion = this.Traduccion.replace(/\*\//g, comentarioBloque);
+    //ya tiene comentarios 
+    this.Traduccion = this.Traduccion.replace(/int/g,'');
+    this.Traduccion = this.Traduccion.replace(/float/g,'');
+    this.Traduccion = this.Traduccion.replace(/bool/g,'');
+    this.Traduccion = this.Traduccion.replace(/string/g, '');
+    this.Traduccion = this.Traduccion.replace(/char/g, '');
+    this.Traduccion = this.Traduccion.replace(/;/g, '');
+    // ya estan los tipos
+    this.Traduccion = this.Traduccion.replace(/{/g, '');
+    this.Traduccion = this.Traduccion.replace(/Console . Write/g,"print");
+    this.Traduccion = this.Traduccion.replace(/}/g, '');
+    
+    console.log(this.Traduccion);
+}
 }
