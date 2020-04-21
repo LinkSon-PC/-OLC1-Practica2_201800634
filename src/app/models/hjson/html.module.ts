@@ -115,8 +115,8 @@ export class HtmlModule {
           }else{
             tabulador++;
             estado =3;
-          }
             cadena += html[i];
+          }
           break;
         case 1:
           if(html[i] === "/"){
@@ -129,14 +129,14 @@ export class HtmlModule {
           
           if(html[i] === ">"){
             estado =0;
-            if(cadena[1].toString()==="/"){
+            if(cadena.includes("/")){
               this.JSON += "}," + "\n";
             }else{
               let aux:string[] = cadena.split("=");
 
-                this.JSON += "\"" + aux[0].substring(1, aux[0].length) +"\""+ ":{ \n";
+                this.JSON += "\"" + aux[0].trim() +"\""+ ":{ \n";
               if(aux.length>1){
-                this.JSON += + "\t" + "\"" + "STYLE: " +"\""+ aux[1] + "\" ,";
+                this.JSON += + "\t" + "\"" + "STYLE: " + aux[1] + " , \n";
               }
             }
             cadena ="";
@@ -149,7 +149,7 @@ export class HtmlModule {
           case 3:
   
             if(html[i] === "<"){
-              this.JSON+="\"TEXTO\": \" "+ cadena + " \" ";
+              this.JSON+="\"TEXTO\": \" "+ cadena.trim() + " \" , \n";
               i--;
               estado =0;
               cadena="";

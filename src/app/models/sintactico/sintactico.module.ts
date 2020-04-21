@@ -855,16 +855,31 @@ export class SintacticoModule {
         if (this.TokenActual.Tipo != Token.sharp) {
           if (this.Continuar) {
             ///this.ControldeLLaves(); // PARA LAS LISTAS ID que llevan , ni tabs
-            this.Traduccion += this.TokenActual.Lexema;
-            this.Traduccion += " ";
-
+            
             if (
-              this.TokenActual.Tipo == Token.punto_y_coma &&
+              this.TokenActual.Tipo == Token.P_Int ||
+              this.TokenActual.Tipo == Token.P_Float ||
+              this.TokenActual.Tipo == Token.P_Char ||
+              this.TokenActual.Tipo == Token.P_String ||
+              this.TokenActual.Tipo == Token.P_Double ||
+              this.TokenActual.Tipo == Token.P_Bool ||
+              this.TokenActual.Tipo == Token.P_void
+            ) {
+              this.Traduccion += "var ";
+            }
+            else if (
+              this.TokenActual.Tipo == Token.punto_y_coma ||
+              this.TokenActual.Tipo == Token.P_case  &&
               this.NSalto == false
             ) {
               this.Traduccion += "\n";
             }
+            else{
+              this.Traduccion += this.TokenActual.Lexema;
+              this.Traduccion += " ";
+            }
             this.NSalto = false;
+          } 
           } // fin traducir
 
           this.Actual++;
@@ -872,7 +887,6 @@ export class SintacticoModule {
         }
 
       }
-    }
   }
 
   public ignoraComentarios(): void {
@@ -1101,9 +1115,9 @@ export class SintacticoModule {
   public traduce() {
     
     let comentarioBloque:string = "\'\'\'";
-    // this.Traduccion = this.Traduccion.replace(/\/\//g, "#");
-    // this.Traduccion = this.Traduccion.replace(/\/*/g, comentarioBloque);
-    // this.Traduccion = this.Traduccion.replace(/\*\//g, comentarioBloque);
+    this.Traduccion = this.Traduccion.replace(/\/\//g, "#");
+    this.Traduccion = this.Traduccion.replace(/\/\*/g, comentarioBloque);
+    this.Traduccion = this.Traduccion.replace(/\*\//g, comentarioBloque);
     //ya tiene comentarios 
     this.Traduccion = this.Traduccion.replace(/int/g,'');
     this.Traduccion = this.Traduccion.replace(/float/g,'');
